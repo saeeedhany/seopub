@@ -108,15 +108,8 @@ main {
 }
 .stores .s { background: var(--salla); }
 .stores .z { background: var(--zid); }
-.stores .dl { background: var(--paper); }
+.stores .dl { background: var(--paper); font-variant-numeric: tabular-nums; }
 
-.count {
-  margin-top: 12px;
-  font-size: 14px;
-  font-weight: 600;
-  color: var(--muted);
-  font-variant-numeric: tabular-nums;
-}
 
 .picker {
   margin-top: 36px;
@@ -314,7 +307,6 @@ footer {
     <h2>Firefox</h2>
     <p class="lead">Firefox 128 or newer. Updates install on their own.</p>
     <a class="get" href="https://github.com/saeeedhany/seopub/releases/download/v0.0.7/seopub-0.0.7.xpi">Add to Firefox <small>340 KB</small></a>
-    <p class="count hidden" id="dl-firefox"></p>
     <ol class="steps">
       <li><div>Click <strong>Add to Firefox</strong> above.</div></li>
       <li><div>Firefox says it prevented this site from asking you to install software. Click <span class="ui">Continue to Installation</span>.</div></li>
@@ -331,7 +323,6 @@ footer {
     <h2>Chrome</h2>
     <p class="lead">Chrome 116 or newer. SEOPub isn't on the Chrome Web Store yet, so it's added in developer mode.</p>
     <a class="get" href="https://github.com/saeeedhany/seopub/releases/download/v0.0.7/seopub-chrome-0.0.7.zip">Download for Chrome <small>329 KB zip</small></a>
-    <p class="count hidden" id="dl-chrome"></p>
     <ol class="steps">
       <li><div>Unzip the download into a folder you'll keep, for example <code>Documents/SEOPub</code>. Chrome runs SEOPub from that folder, so don't delete or move it later.</div></li>
       <li><div>Open a new tab and go to <code>chrome://extensions</code><button type="button" class="copy" data-copy="chrome://extensions">Copy</button>. Chrome doesn't let websites link there, so paste it into the address bar.</div></li>
@@ -385,20 +376,16 @@ footer {
   const ua = navigator.userAgent;
   pick(/Firefox\//.test(ua) ? 'firefox' : /Chrome\/|Chromium\//.test(ua) ? 'chrome' : 'firefox');
 
-  const times = (n) => `Downloaded ${n.toLocaleString('en')} ${n === 1 ? 'time' : 'times'}`;
-  const show = (id, text) => { const el = document.getElementById(id); el.textContent = text; el.classList.remove('hidden'); };
   fetch('https://api.github.com/repos/saeeedhany/seopub/releases?per_page=100')
     .then(r => (r.ok ? r.json() : Promise.reject(r.status)))
     .then(list => {
-      let firefox = 0, chrome = 0;
+      let total = 0;
       list.forEach(rel => (rel.assets || []).forEach(a => {
-        if (a.name.endsWith('.xpi')) firefox += a.download_count;
-        else if (a.name.endsWith('.zip')) chrome += a.download_count;
+        if (/\.(xpi|zip)$/.test(a.name)) total += a.download_count;
       }));
-      const total = firefox + chrome;
-      show('dl-total', `${total.toLocaleString('en')} ${total === 1 ? 'download' : 'downloads'}`);
-      show('dl-firefox', firefox ? times(firefox) : 'No downloads yet');
-      show('dl-chrome', chrome ? times(chrome) : 'No downloads yet');
+      const el = document.getElementById('dl-total');
+      el.textContent = `${total.toLocaleString('en')} ${total === 1 ? 'download' : 'downloads'}`;
+      el.classList.remove('hidden');
     })
     .catch(() => {});
 
