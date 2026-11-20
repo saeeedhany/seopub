@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Install SEOPub</title>
+<meta name="description" content="Publish SEO articles and product updates to Salla and Zid stores from a Google Sheet." />
+<link rel="icon" href="seopub.svg" type="image/svg+xml" />
+<style>
+@font-face { font-family: "Bricolage"; font-weight: 200 800; font-stretch: 75% 100%; font-display: swap; src: url("fonts/bricolage-grotesque-latin-standard-normal.woff2") format("woff2-variations"); }
+
+:root {
+  --bg: #F4ECDF;
+  --paper: #FFFBF4;
+  --ink: #3D3029;
+  --edge: #4B3A31;
+  --muted: #7D6C61;
+  --honey: #F6D48F;
+  --chip: #EFE6D9;
+  --salla: #BCDDC4;
+  --zid: #D8CBEF;
+  --fox: #F7CD9B;
+  --b: 2px;
+  --r: 14px;
+  color-scheme: light;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: "Bricolage", system-ui, sans-serif;
+  font-optical-sizing: auto;
+  font-size: 16px;
+  line-height: 1.55;
+  color: var(--ink);
+  background: var(--bg);
+  min-height: 100vh;
+}
+
+a { color: inherit; }
+:focus-visible { outline: 3px solid var(--edge); outline-offset: 3px; }
+.hidden { display: none !important; }
+
+.top {
+  background: var(--honey);
+  border-bottom: var(--b) solid var(--edge);
+}
+.top-in {
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 14px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 800;
+  font-size: 22px;
+  font-stretch: 85%;
+  letter-spacing: -0.01em;
+}
+.brand img { width: 34px; height: 34px; border: var(--b) solid var(--edge); border-radius: 10px; }
+.ver {
+  font-size: 13px;
+  font-weight: 700;
+  background: var(--paper);
+  border: var(--b) solid var(--edge);
+  border-radius: 999px;
+  padding: 3px 11px;
+  white-space: nowrap;
+}
+
+main {
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 40px 16px 56px;
+}
+
+.hero h1 {
+  font-size: clamp(38px, 9vw, 64px);
+  line-height: 0.98;
+  font-weight: 800;
+  font-stretch: 78%;
+  letter-spacing: -0.02em;
+  max-width: 12ch;
+}
+.hero p {
+  margin-top: 16px;
+  font-size: 18px;
+  max-width: 34em;
+}
+.stores {
+  margin-top: 18px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.stores span {
+  font-size: 14px;
+  font-weight: 700;
+  border: var(--b) solid var(--edge);
+  border-radius: 999px;
+  padding: 3px 12px;
+}
+.stores .s { background: var(--salla); }
+.stores .z { background: var(--zid); }
+
+.picker {
+  margin-top: 36px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  border: var(--b) solid var(--edge);
+  border-radius: var(--r);
+  overflow: hidden;
+  box-shadow: 4px 4px 0 var(--edge);
+  background: var(--paper);
+}
+.picker button {
+  font: inherit;
+  font-weight: 700;
+  font-size: 17px;
+  color: var(--ink);
+  background: transparent;
+  border: 0;
+  padding: 13px 10px;
+  cursor: pointer;
+}
+.picker button + button { border-left: var(--b) solid var(--edge); }
+.picker button[aria-selected="true"] { background: var(--fox); }
+.picker button[data-browser="chrome"][aria-selected="true"] { background: var(--salla); }
+
+.panel {
+  margin-top: 22px;
+  background: var(--paper);
+  border: var(--b) solid var(--edge);
+  border-radius: var(--r);
+  box-shadow: 4px 4px 0 var(--edge);
+  padding: 24px 22px;
+}
+.panel h2 {
+  font-size: 26px;
+  font-weight: 800;
+  font-stretch: 85%;
+  line-height: 1.15;
+}
+.panel .lead { margin-top: 6px; color: var(--muted); }
+
+.get {
+  margin-top: 20px;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+  font-weight: 800;
+  font-size: 19px;
+  color: var(--ink);
+  background: var(--honey);
+  border: var(--b) solid var(--edge);
+  border-radius: 12px;
+  padding: 13px 22px;
+  box-shadow: 4px 4px 0 var(--edge);
+  transition: transform 0.08s, box-shadow 0.08s;
+}
+.get:hover { transform: translate(-1px, -1px); box-shadow: 5px 5px 0 var(--edge); }
+.get:active { transform: translate(4px, 4px); box-shadow: 0 0 0 var(--edge); }
+.get small { font-size: 13px; font-weight: 600; color: var(--muted); }
+
+.steps {
+  list-style: none;
+  counter-reset: s;
+  margin-top: 26px;
+  display: grid;
+  gap: 14px;
+}
+.steps li {
+  counter-increment: s;
+  display: grid;
+  grid-template-columns: 32px minmax(0, 1fr);
+  gap: 12px;
+  align-items: start;
+}
+.steps li::before {
+  content: counter(s);
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  font-weight: 800;
+  background: var(--chip);
+  border: var(--b) solid var(--edge);
+  border-radius: 50%;
+}
+.steps li > div { padding-top: 3px; }
+.steps strong { font-weight: 800; }
+
+.ui {
+  font-weight: 700;
+  background: var(--chip);
+  border: 1.5px solid var(--edge);
+  border-radius: 6px;
+  padding: 0 6px;
+  white-space: nowrap;
+}
+code {
+  font-family: ui-monospace, "SFMono-Regular", Menlo, monospace;
+  font-size: 0.9em;
+  background: var(--chip);
+  border-radius: 5px;
+  padding: 1px 5px;
+  overflow-wrap: anywhere;
+}
+.copy {
+  font: inherit;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--ink);
+  background: var(--paper);
+  border: 1.5px solid var(--edge);
+  border-radius: 8px;
+  padding: 1px 9px;
+  margin-left: 4px;
+  cursor: pointer;
+}
+
+.aside {
+  margin-top: 22px;
+  padding-top: 18px;
+  border-top: 1.5px dashed var(--edge);
+  font-size: 15px;
+}
+.aside h3 { font-size: 16px; font-weight: 800; }
+.aside p { margin-top: 4px; }
+
+.after {
+  margin-top: 44px;
+}
+.after h2, .notes h2 {
+  font-size: 24px;
+  font-weight: 800;
+  font-stretch: 85%;
+}
+.after ol {
+  margin-top: 12px;
+  padding-left: 22px;
+  display: grid;
+  gap: 8px;
+}
+
+.notes {
+  margin-top: 44px;
+  background: var(--paper);
+  border: var(--b) solid var(--edge);
+  border-radius: var(--r);
+  padding: 20px 22px;
+}
+.notes .when { color: var(--muted); font-size: 14px; margin-top: 2px; }
+.notes h3 { font-size: 16px; font-weight: 800; margin-top: 14px; }
+.notes ol { margin-top: 6px; padding-left: 22px; display: grid; gap: 6px; font-size: 15px; }
+
+footer {
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 0 16px 40px;
+  font-size: 14px;
+  color: var(--muted);
+}
+
+@media (max-width: 480px) {
+  .panel, .notes { padding: 20px 16px; }
+  .get { width: 100%; justify-content: center; flex-wrap: wrap; }
+  .hero p { font-size: 17px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .get { transition: none; }
+}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="top-in">
+    <div class="brand"><img src="seopub.svg" alt="" />SEOPub</div>
+    <span class="ver">Version 0.0.6</span>
+  </div>
+</header>
+
+<main>
+  <section class="hero">
+    <h1>Install SEOPub</h1>
+    <p>Publish SEO articles and product updates to your store straight from a Google Sheet. It works in your browser's sidebar, using the dashboard you're already logged in to.</p>
+    <div class="stores"><span class="s">Salla</span><span class="z">Zid</span></div>
+  </section>
+
+  <div class="picker" role="tablist" aria-label="Your browser">
+    <button type="button" role="tab" id="tab-firefox" data-browser="firefox" aria-controls="panel-firefox" aria-selected="true">Firefox</button>
+    <button type="button" role="tab" id="tab-chrome" data-browser="chrome" aria-controls="panel-chrome" aria-selected="false">Chrome</button>
+  </div>
+
+  <section class="panel" id="panel-firefox" role="tabpanel" aria-labelledby="tab-firefox">
+    <h2>Firefox</h2>
+    <p class="lead">Firefox 128 or newer. Updates install on their own.</p>
+    <a class="get" href="files/seopub-0.0.6.xpi">Add to Firefox <small>340 KB</small></a>
+    <ol class="steps">
+      <li><div>Click <strong>Add to Firefox</strong> above.</div></li>
+      <li><div>Firefox says it prevented this site from asking you to install software. Click <span class="ui">Continue to Installation</span>.</div></li>
+      <li><div>Click <span class="ui">Add</span>. SEOPub is signed by Mozilla, so Firefox installs it without any extra settings.</div></li>
+      <li><div>Click the SEOPub icon in the toolbar to open the sidebar. If you don't see it, it's under the puzzle piece icon, where you can pin it.</div></li>
+    </ol>
+    <div class="aside">
+      <h3>Updates</h3>
+      <p>Firefox checks for a new version about once a day and installs it for you. To check right away, open <code>about:addons</code>, click the gear icon, then <span class="ui">Check for Updates</span>.</p>
+    </div>
+  </section>
+
+  <section class="panel hidden" id="panel-chrome" role="tabpanel" aria-labelledby="tab-chrome">
+    <h2>Chrome</h2>
+    <p class="lead">Chrome 116 or newer. SEOPub isn't on the Chrome Web Store yet, so it's added in developer mode.</p>
+    <a class="get" href="files/seopub-chrome-0.0.6.zip" download>Download for Chrome <small>329 KB zip</small></a>
+    <ol class="steps">
+      <li><div>Unzip the download into a folder you'll keep, for example <code>Documents/SEOPub</code>. Chrome runs SEOPub from that folder, so don't delete or move it later.</div></li>
+      <li><div>Open a new tab and go to <code>chrome://extensions</code><button type="button" class="copy" data-copy="chrome://extensions">Copy</button>. Chrome doesn't let websites link there, so paste it into the address bar.</div></li>
+      <li><div>Turn on <span class="ui">Developer mode</span> in the top right corner.</div></li>
+      <li><div>Click <span class="ui">Load unpacked</span> and choose the unzipped folder, the one that contains <code>manifest.json</code>.</div></li>
+      <li><div>Click the puzzle piece icon in the toolbar and pin SEOPub. Clicking it opens the side panel.</div></li>
+    </ol>
+    <div class="aside">
+      <h3>Updates</h3>
+      <p>Download the new zip and unzip it into the same folder, replacing the old files. Then click the reload arrow on SEOPub's card in <code>chrome://extensions</code>. Your saved settings stay, as long as the folder stays in the same place.</p>
+    </div>
+  </section>
+
+  <section class="after">
+    <h2>Before your first run</h2>
+    <ol>
+      <li>Open your Salla or Zid dashboard, log in, and refresh the tab once so SEOPub can use your login.</li>
+      <li>Share your Google Sheet and every doc in it as <strong>Anyone with the link can view</strong>.</li>
+      <li>Start with two or three rows, check them in your dashboard, then run the rest.</li>
+    </ol>
+  </section>
+
+  <section class="notes">
+    <h2>What's new in 0.0.6</h2>
+    <p class="when">Released 20 November 2026</p>
+    <h3>New</h3>
+        <ol>
+        <li>SEOPub has an install page, and Firefox now updates it automatically from there. Installing 0.0.6 from the page once is enough; later versions arrive on their own.</li>
+        <li>A Chrome version, installed from the same page in developer mode.</li>
+        <li>SEOPub's own icon shows in the browser's add-ons list.</li>
+        </ol>
+  </section>
+</main>
+
+<footer>SEOPub 0.0.6. Font: Bricolage Grotesque, under the SIL Open Font License.</footer>
+
+<script>
+(() => {
+  const tabs = [...document.querySelectorAll('.picker button')];
+  const pick = (name) => tabs.forEach(t => {
+    const on = t.dataset.browser === name;
+    t.setAttribute('aria-selected', String(on));
+    t.tabIndex = on ? 0 : -1;
+    document.getElementById(t.getAttribute('aria-controls')).classList.toggle('hidden', !on);
+  });
+  tabs.forEach(t => t.addEventListener('click', () => pick(t.dataset.browser)));
+  document.querySelector('.picker').addEventListener('keydown', (e) => {
+    if (e.key !== 'ArrowLeft' && e.key !== 'ArrowRight') return;
+    const next = tabs.find(t => t.getAttribute('aria-selected') !== 'true');
+    pick(next.dataset.browser);
+    next.focus();
+  });
+  const ua = navigator.userAgent;
+  pick(/Firefox\//.test(ua) ? 'firefox' : /Chrome\/|Chromium\//.test(ua) ? 'chrome' : 'firefox');
+
+  document.querySelectorAll('.copy').forEach(btn => btn.addEventListener('click', async () => {
+    const text = btn.dataset.copy;
+    try { await navigator.clipboard.writeText(text); }
+    catch (e) {
+      const ta = Object.assign(document.createElement('textarea'), { value: text });
+      document.body.append(ta); ta.select(); document.execCommand('copy'); ta.remove();
+    }
+    btn.textContent = 'Copied';
+    setTimeout(() => { btn.textContent = 'Copy'; }, 1500);
+  }));
+})();
+</script>
+</body>
+</html>

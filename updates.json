@@ -1,0 +1,13 @@
+{
+  "addons": {
+    "seopub@extension": {
+      "updates": [
+        {
+          "version": "0.0.6",
+          "update_link": "https://saeeedhany.github.io/seopub/files/seopub-0.0.6.xpi",
+          "update_hash": "sha256:eb779c699973018b2e9d8c04410feb251c8aae26c2a25ff61fa02ae9b7fc8d92"
+        }
+      ]
+    }
+  }
+}
