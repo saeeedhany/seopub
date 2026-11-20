@@ -396,10 +396,9 @@ footer {
         else if (a.name.endsWith('.zip')) chrome += a.download_count;
       }));
       const total = firefox + chrome;
-      if (!total) return;
       show('dl-total', `${total.toLocaleString('en')} ${total === 1 ? 'download' : 'downloads'}`);
-      if (firefox) show('dl-firefox', times(firefox));
-      if (chrome) show('dl-chrome', times(chrome));
+      show('dl-firefox', firefox ? times(firefox) : 'No downloads yet');
+      show('dl-chrome', chrome ? times(chrome) : 'No downloads yet');
     })
     .catch(() => {});
 
