@@ -3,9 +3,9 @@
     "seopub@extension": {
       "updates": [
         {
-          "version": "0.0.10",
-          "update_link": "https://saeeedhany.github.io/seopub/files/seopub-0.0.10.xpi",
-          "update_hash": "sha256:e0c0e67e52ef966acfa10ab29c0df2101bd43f7c134399c733946fbc25244fec"
+          "version": "0.0.12",
+          "update_link": "https://saeeedhany.github.io/seopub/files/seopub-0.0.12.xpi",
+          "update_hash": "sha256:a44b80d8e43a279bb4d9169f1dc0c43b5cef3043eefe801f9e395fdf46a79eb9"
         }
       ]
     }
