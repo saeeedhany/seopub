@@ -245,6 +245,8 @@ code {
   font-weight: 800;
   font-stretch: 85%;
 }
+.after .more { margin-top: 16px; font-size: 15px; }
+.after .more a { font-weight: 800; text-decoration-thickness: 2px; text-underline-offset: 3px; }
 .after ol {
   margin-top: 12px;
   padding-left: 22px;
@@ -319,7 +321,7 @@ footer {
 <header class="top">
   <div class="top-in">
     <div class="brand"><img src="seopub.svg" alt="" />SEOPub</div>
-    <span class="ver">Version 0.0.8</span>
+    <span class="ver">Version 0.0.10</span>
   </div>
 </header>
 
@@ -338,7 +340,7 @@ footer {
   <section class="panel" id="panel-firefox" role="tabpanel" aria-labelledby="tab-firefox">
     <h2>Firefox</h2>
     <p class="lead">Firefox 128 or newer. Updates install on their own.</p>
-    <a class="get" href="https://github.com/saeeedhany/seopub/releases/download/v0.0.8/seopub-0.0.8.xpi">Add to Firefox <small>346 KB</small></a>
+    <a class="get" href="https://github.com/saeeedhany/seopub/releases/download/v0.0.10/seopub-0.0.10.xpi">Add to Firefox <small>351 KB</small></a>
     <ol class="steps">
       <li><div>Click <strong>Add to Firefox</strong> above.</div></li>
       <li><div>Firefox says it prevented this site from asking you to install software. Click <span class="ui">Continue to Installation</span>.</div></li>
@@ -354,7 +356,7 @@ footer {
   <section class="panel hidden" id="panel-chrome" role="tabpanel" aria-labelledby="tab-chrome">
     <h2>Chrome</h2>
     <p class="lead">Chrome 116 or newer. SEOPub isn't on the Chrome Web Store yet, so it's added in developer mode.</p>
-    <a class="get" href="https://github.com/saeeedhany/seopub/releases/download/v0.0.8/seopub-chrome-0.0.8.zip">Download for Chrome <small>335 KB zip</small></a>
+    <a class="get" href="https://github.com/saeeedhany/seopub/releases/download/v0.0.10/seopub-chrome-0.0.10.zip">Download for Chrome <small>339 KB zip</small></a>
     <ol class="steps">
       <li><div>Unzip the download into a folder you'll keep, for example <code>Documents/SEOPub</code>. Chrome runs SEOPub from that folder, so don't delete or move it later.</div></li>
       <li><div>Open a new tab and go to <code>chrome://extensions</code><button type="button" class="copy" data-copy="chrome://extensions">Copy</button>. Chrome doesn't let websites link there, so paste it into the address bar.</div></li>
@@ -375,19 +377,19 @@ footer {
       <li>Share your Google Sheet and every doc in it as <strong>Anyone with the link can view</strong>.</li>
       <li>Start with two or three rows, check them in your dashboard, then run the rest.</li>
     </ol>
+    <p class="more">Using a data center sheet to manage your catalogue? <a href="data-center.html">Connect it to SEOPub</a>.</p>
   </section>
 
   <section class="notes">
-    <h2>What's new in 0.0.8</h2>
-    <p class="when">Released 21 November 2026</p>
+    <h2>What's new in 0.0.10</h2>
+    <p class="when">Released 23 November 2026</p>
     <h3>New</h3>
         <ol>
-        <li>Undo a product run: before changing a product, SEOPub saves its current name, meta title, meta description, link and description. The results screen has an &ldquo;Undo this run&rdquo; button that puts them back. The old values are also added to the copied and downloaded report.</li>
-        <li>See what will change before updating: the review screen looks up every product in Salla or Zid and shows what the store has now next to what will be sent. Products that already match, and products that cannot be found, are unselected automatically.</li>
-        <li>Products are only sent the fields that actually differ from the store. A product that already matches is left untouched.</li>
-        <li>Chrome: the panel shows a notice with a download link when a newer version of SEOPub is released.</li>
+        <li>Products are found by their ID when the sheet has an ID column (for example &ldquo;ID المنتج&rdquo;). The name search is skipped, so a small difference in the product name no longer stops the update. Rows without an ID are still found by name.</li>
+        <li>When the sheet has a work status column (&ldquo;حالة العمل&rdquo;), only rows marked جاهز للرفع are sent. The other rows are listed under skipped rows with their status.</li>
+        <li>Optional data center connection, under &ldquo;Data center (optional)&rdquo; on the first screen. With the address and key of your own data center sheet, &ldquo;Send catalogue&rdquo; sends every product from the Salla dashboard to that sheet, and after each product run SEOPub sends the changed products so the sheet can confirm them. Nothing is sent while the two fields are empty. The Data center page on the install site explains it.</li>
         </ol>
-        <p class="note">Both undo and the comparison need the New Salla dashboard option, or Zid.</p>
+        <p class="note">0.0.9 was a test build that was not released, so its changes are included here.</p>
   </section>
 </main>
 
@@ -397,7 +399,7 @@ footer {
       <span>Made by <a href="https://saeed.cool">Saeed</a></span>
       <a class="gh" href="https://github.com/saeeedhany" aria-label="Saeed on GitHub"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>saeeedhany</a>
     </span>
-    <span>SEOPub 0.0.8</span>
+    <span>SEOPub 0.0.10</span>
   </div>
   <p class="credit">Set in Bricolage Grotesque, under the SIL Open Font License.</p>
 </footer>
