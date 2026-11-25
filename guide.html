@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Data Center Guide</title>
+<meta name="description" content="The manager's guide to the data center: where the data comes from, how products are grouped, how a batch becomes a published page, roles, and adding writers and stores." />
+<link rel="icon" href="seopub.svg" type="image/svg+xml" />
+<style>
+@font-face { font-family: "Bricolage"; font-weight: 200 800; font-stretch: 75% 100%; font-display: swap; src: url("fonts/bricolage-grotesque-latin-standard-normal.woff2") format("woff2-variations"); }
+
+:root {
+  --bg: #F4ECDF;
+  --paper: #FFFBF4;
+  --ink: #3D3029;
+  --edge: #4B3A31;
+  --muted: #7D6C61;
+  --honey: #F6D48F;
+  --chip: #EFE6D9;
+  --salla: #BCDDC4;
+  --zid: #D8CBEF;
+  --fox: #F7CD9B;
+  --b: 2px;
+  --r: 14px;
+  color-scheme: light;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: "Bricolage", system-ui, sans-serif;
+  font-optical-sizing: auto;
+  font-size: 16px;
+  line-height: 1.55;
+  color: var(--ink);
+  background: var(--bg);
+  min-height: 100vh;
+}
+
+a { color: inherit; }
+:focus-visible { outline: 3px solid var(--edge); outline-offset: 3px; }
+.hidden { display: none !important; }
+
+.top {
+  background: var(--honey);
+  border-bottom: var(--b) solid var(--edge);
+}
+.top-in {
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 14px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 800;
+  font-size: 22px;
+  font-stretch: 85%;
+  letter-spacing: -0.01em;
+}
+.brand img { width: 34px; height: 34px; border: var(--b) solid var(--edge); border-radius: 10px; }
+.ver {
+  font-size: 13px;
+  font-weight: 700;
+  background: var(--paper);
+  border: var(--b) solid var(--edge);
+  border-radius: 999px;
+  padding: 3px 11px;
+  white-space: nowrap;
+}
+
+main {
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 40px 16px 56px;
+}
+
+.hero h1 {
+  font-size: clamp(38px, 9vw, 64px);
+  line-height: 0.98;
+  font-weight: 800;
+  font-stretch: 78%;
+  letter-spacing: -0.02em;
+  max-width: 12ch;
+}
+.hero p {
+  margin-top: 16px;
+  font-size: 18px;
+  max-width: 34em;
+}
+.stores {
+  margin-top: 18px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.stores span {
+  font-size: 14px;
+  font-weight: 700;
+  border: var(--b) solid var(--edge);
+  border-radius: 999px;
+  padding: 3px 12px;
+}
+.stores .s { background: var(--salla); }
+.stores .z { background: var(--zid); }
+.stores .dl { background: var(--paper); font-variant-numeric: tabular-nums; }
+
+
+.picker {
+  margin-top: 36px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  border: var(--b) solid var(--edge);
+  border-radius: var(--r);
+  overflow: hidden;
+  box-shadow: 4px 4px 0 var(--edge);
+  background: var(--paper);
+}
+.picker button {
+  font: inherit;
+  font-weight: 700;
+  font-size: 17px;
+  color: var(--ink);
+  background: transparent;
+  border: 0;
+  padding: 13px 10px;
+  cursor: pointer;
+}
+.picker button + button { border-left: var(--b) solid var(--edge); }
+.picker button[aria-selected="true"] { background: var(--fox); }
+.picker button[data-browser="chrome"][aria-selected="true"] { background: var(--salla); }
+
+.panel {
+  margin-top: 22px;
+  background: var(--paper);
+  border: var(--b) solid var(--edge);
+  border-radius: var(--r);
+  box-shadow: 4px 4px 0 var(--edge);
+  padding: 24px 22px;
+}
+.panel h2 {
+  font-size: 26px;
+  font-weight: 800;
+  font-stretch: 85%;
+  line-height: 1.15;
+}
+.panel .lead { margin-top: 6px; color: var(--muted); }
+
+.get {
+  margin-top: 20px;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+  font-weight: 800;
+  font-size: 19px;
+  color: var(--ink);
+  background: var(--honey);
+  border: var(--b) solid var(--edge);
+  border-radius: 12px;
+  padding: 13px 22px;
+  box-shadow: 4px 4px 0 var(--edge);
+  transition: transform 0.08s, box-shadow 0.08s;
+}
+.get:hover { transform: translate(-1px, -1px); box-shadow: 5px 5px 0 var(--edge); }
+.get:active { transform: translate(4px, 4px); box-shadow: 0 0 0 var(--edge); }
+.get small { font-size: 13px; font-weight: 600; color: var(--muted); }
+
+.steps {
+  list-style: none;
+  counter-reset: s;
+  margin-top: 26px;
+  display: grid;
+  gap: 14px;
+}
+.steps li {
+  counter-increment: s;
+  display: grid;
+  grid-template-columns: 32px minmax(0, 1fr);
+  gap: 12px;
+  align-items: start;
+}
+.steps li::before {
+  content: counter(s);
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  font-weight: 800;
+  background: var(--chip);
+  border: var(--b) solid var(--edge);
+  border-radius: 50%;
+}
+.steps li > div { padding-top: 3px; }
+.steps strong { font-weight: 800; }
+
+.ui {
+  font-weight: 700;
+  background: var(--chip);
+  border: 1.5px solid var(--edge);
+  border-radius: 6px;
+  padding: 0 6px;
+  white-space: nowrap;
+}
+code {
+  font-family: ui-monospace, "SFMono-Regular", Menlo, monospace;
+  font-size: 0.9em;
+  background: var(--chip);
+  border-radius: 5px;
+  padding: 1px 5px;
+  overflow-wrap: anywhere;
+}
+.copy {
+  font: inherit;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--ink);
+  background: var(--paper);
+  border: 1.5px solid var(--edge);
+  border-radius: 8px;
+  padding: 1px 9px;
+  margin-left: 4px;
+  cursor: pointer;
+}
+
+.aside {
+  margin-top: 22px;
+  padding-top: 18px;
+  border-top: 1.5px dashed var(--edge);
+  font-size: 15px;
+}
+.aside h3 { font-size: 16px; font-weight: 800; }
+.aside p { margin-top: 4px; }
+
+.after {
+  margin-top: 44px;
+}
+.after h2, .notes h2 {
+  font-size: 24px;
+  font-weight: 800;
+  font-stretch: 85%;
+}
+.after ol {
+  margin-top: 12px;
+  padding-left: 22px;
+  display: grid;
+  gap: 8px;
+}
+
+.notes {
+  margin-top: 44px;
+  background: var(--paper);
+  border: var(--b) solid var(--edge);
+  border-radius: var(--r);
+  padding: 20px 22px;
+}
+.notes .when { color: var(--muted); font-size: 14px; margin-top: 2px; }
+.notes h3 { font-size: 16px; font-weight: 800; margin-top: 14px; }
+.notes ol { margin-top: 6px; padding-left: 22px; display: grid; gap: 6px; font-size: 15px; }
+.notes .note { margin-top: 14px; padding: 8px 12px; font-size: 14px; border-left: 3px solid var(--edge); background: var(--bg); border-radius: 0 8px 8px 0; }
+
+footer {
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 22px 16px 40px;
+  border-top: 1.5px dashed var(--edge);
+  font-size: 14px;
+  color: var(--muted);
+}
+.made {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 6px 16px;
+  font-size: 15px;
+  color: var(--ink);
+}
+.made a {
+  font-weight: 800;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 3px;
+}
+.made a:hover { background: var(--honey); }
+.who { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 14px; }
+.gh {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  text-decoration: none;
+  font-weight: 700;
+  color: var(--ink);
+  background: var(--paper);
+  border: 1.5px solid var(--edge);
+  border-radius: 999px;
+  padding: 2px 11px 2px 8px;
+}
+.gh:hover { background: var(--honey); }
+.gh svg { width: 16px; height: 16px; fill: currentColor; }
+.credit { margin-top: 8px; font-size: 13px; }
+
+@media (max-width: 480px) {
+  .panel, .notes { padding: 20px 16px; }
+  .get { width: 100%; justify-content: center; flex-wrap: wrap; }
+  .hero p { font-size: 17px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .get { transition: none; }
+}
+
+.back { font-weight: 700; font-size: 15px; text-decoration-thickness: 2px; text-underline-offset: 3px; }
+.back:hover { background: var(--paper); }
+.sec { margin-top: 36px; }
+.sec h2 { font-size: 24px; font-weight: 800; font-stretch: 85%; }
+.sec p { margin-top: 10px; }
+.sec ol { margin-top: 12px; padding-left: 22px; display: grid; gap: 8px; }
+.tag { display: inline-block; margin-top: 18px; font-size: 14px; font-weight: 700; background: var(--chip); border: var(--b) solid var(--edge); border-radius: 999px; padding: 3px 12px; }
+.ar { font-family: "Noto Naskh Arabic", "Noto Sans Arabic", "Segoe UI", Tahoma, sans-serif; }
+.ui { white-space: normal; -webkit-box-decoration-break: clone; box-decoration-break: clone; }
+.toc { margin-top: 22px; display: flex; flex-wrap: wrap; gap: 8px; }
+.toc a { font-size: 14px; font-weight: 700; text-decoration: none; background: var(--paper); border: var(--b) solid var(--edge); border-radius: 999px; padding: 2px 12px; }
+.toc a:hover { background: var(--honey); }
+.sec h3 { margin-top: 18px; font-size: 18px; font-weight: 800; }
+.sec ol ol { margin-top: 6px; }
+.tree { margin-top: 12px; padding: 14px 16px; background: var(--paper); border: var(--b) solid var(--edge); border-radius: 12px; }
+.tree ol { margin-top: 6px; }
+.box { margin-top: 14px; padding: 10px 14px; font-size: 15px; border-left: 3px solid var(--edge); background: var(--paper); border-radius: 0 8px 8px 0; }
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="top-in">
+    <a class="brand back" href="./"><img src="seopub.svg" alt="" />SEOPub</a>
+    <span class="ver">Version 0.0.14</span>
+  </div>
+</header>
+
+<main>
+  <section class="hero">
+    <h1>Data center guide</h1>
+    <p>For managers. How the data center finds the products worth working on, how a batch becomes a published page, and how to add writers, stores and managers.</p>
+    <p class="box">Writers have their own page in Arabic: <a href="writers.html">دليل الكاتب</a>. Send them that link.</p>
+    <nav class="toc" aria-label="Contents">
+      <a href="#parts">What it is</a>
+      <a href="#data">Where the data comes from</a>
+      <a href="#groups">How products are grouped</a>
+      <a href="#flow">From batch to published</a>
+      <a href="#menu">The menu</a>
+      <a href="#schedule">Schedules and limits</a>
+      <a href="#roles">Roles</a>
+      <a href="#writer">Adding a writer</a>
+      <a href="#store">Adding a store</a>
+      <a href="#cutoffs">Changing the cutoffs</a>
+      <a href="#trouble">When something goes wrong</a>
+    </nav>
+  </section>
+
+  <section class="panel" id="parts">
+    <h2>What it is</h2>
+    <p class="lead">Three parts work together. A writer only writes the description and checks the meta cells; everything else is automatic.</p>
+    <ol class="steps">
+      <li><div><strong>The data center sheet.</strong> Every product of every store, with its search performance, its group and its work status. Each manager has their own control panel tab here. Writers never see this sheet.</div></li>
+      <li><div><strong>The upload sheet.</strong> One tab per store, holding only the rows being written. Writers work here and in the Google Docs.</div></li>
+      <li><div><strong>SEOPub.</strong> Publishes rows marked <span class="ui ar">جاهز للرفع</span> to Salla, and sends the store's products to the data center. See <a href="data-center.html">connecting SEOPub</a>.</div></li>
+    </ol>
+  </section>
+
+  <section class="sec" id="data">
+    <h2>Where the data comes from</h2>
+    <ol>
+      <li><strong>The product list, from Salla through SEOPub.</strong> While a Salla dashboard tab is open, SEOPub sends the products that changed once a day and the full catalogue once a week. "Send catalogue" in SEOPub does it at once. For each product: name, SKU, status, stock, link, slug, meta title and description, description text and categories. This is why the data center knows the whole catalogue, not only the products that appear in Google.</li>
+      <li><strong>Search performance, from Google Search Console.</strong> Read directly every morning, for two fixed windows: the last 28 days and the last 90 days. Clicks, impressions, CTR and average position per product page, plus the top 5 search phrases of each page over 90 days. There is no row cap; the script pages through everything. Google's numbers lag about 2 to 3 days.</li>
+      <li><strong>Index status, from Google's URL Inspection.</strong> Only for visible products with no impressions in 90 days, since those are the ones where you need to know whether Google indexed the page at all. Google allows about 2,000 inspections per property per day; the script stops at 1900, and checks a product again after 30 days.</li>
+      <li><strong>Work status, from the upload sheet and the live store.</strong> Every hour the script reads each row's status, checks rows that are ready, and compares published rows with what Salla now holds.</li>
+    </ol>
+  </section>
+
+  <section class="sec" id="groups">
+    <h2>How products are grouped</h2>
+    <p>Each product goes through these questions in order and stops at the first that fits. Impressions, clicks and position are the 90 day numbers.</p>
+    <div class="tree">
+      <ol>
+        <li>It has impressions but is hidden or missing in the store: <span class="ui ar">غير ظاهر في المتجر</span>.</li>
+        <li>No impressions at all:
+          <ol>
+            <li>out of stock: <span class="ui ar">غير متوفر</span></li>
+            <li>not inspected yet: <span class="ui ar">لم يفحص بعد</span></li>
+            <li>Google says it is not indexed: <span class="ui ar">غير مفهرس</span></li>
+            <li>indexed, but nobody sees it: <span class="ui ar">مفهرس بلا ظهور</span></li>
+          </ol>
+        </li>
+        <li>Fewer than 50 impressions: <span class="ui ar">ظهور محدود جدا</span>.</li>
+        <li>From 50 up to 200 impressions: position worse than 20 gives <span class="ui ar">ظهور منخفض: تحسين الترتيب</span>, otherwise <span class="ui ar">ظهور منخفض: توسيع الوصول</span>.</li>
+        <li>200 impressions or more:
+          <ol>
+            <li>position worse than 20: <span class="ui ar">ظهور قائم وترتيب ضعيف</span></li>
+            <li>position worse than 10: <span class="ui ar">قريب من الصفحة الأولى</span></li>
+            <li>on the first page with CTR under 1%: <span class="ui ar">ظهور جيد ونقر منخفض</span></li>
+            <li>anything else: <span class="ui ar">أداء جيد: متابعة</span> (leave it alone)</li>
+          </ol>
+        </li>
+      </ol>
+    </div>
+    <p>The groups are also split by reach: <span class="ui ar">وصل</span> (Google shows it), <span class="ui ar">لم يصل</span> (no impressions) and <span class="ui ar">غير ظاهر في المتجر</span>. The panel shows how many products each group has, how many are available to send, and their impressions.</p>
+
+    <h3>Priority inside a group</h3>
+    <p>Products are ordered by a priority score: 90 day impressions divided by average position. Many impressions at a good position come first, because improving them pays off fastest.</p>
+
+    <h3>The recommended group</h3>
+    <p>The panel suggests the first group in this order that still has products available: <span class="ui ar">ظهور جيد ونقر منخفض</span>, <span class="ui ar">قريب من الصفحة الأولى</span>, <span class="ui ar">مفهرس بلا ظهور</span>, <span class="ui ar">ظهور قائم وترتيب ضعيف</span>, <span class="ui ar">ظهور منخفض: توسيع الوصول</span>, <span class="ui ar">ظهور منخفض: تحسين الترتيب</span>, <span class="ui ar">ظهور محدود جدا</span>. Groups with a technical cause (not indexed, not in the store, out of stock, not inspected) and good performers are never sent for writing.</p>
+
+    <h3>Which products can be sent</h3>
+    <p>A product is available when its group is a writing group, it is in stock, and it is not already being worked on. A product that was published and verified comes back only after 90 days, so its new text has time to show results.</p>
+  </section>
+
+  <section class="sec" id="flow">
+    <h2>From batch to published</h2>
+    <ol>
+      <li><strong>Choose on your panel:</strong> store, group (the panel suggests one and says why), batch size (1 to 100, default 20), category, writer, and writing days (1 to 30, default 3).</li>
+      <li><strong><span class="ui ar">معاينة دفعة</span></strong> picks the top products by priority score, checks each live page, and lists them with anything skipped and why. A preview is valid for one hour, and changing any panel choice needs a new preview.</li>
+      <li><strong><span class="ui ar">إرسال الدفعة</span></strong> gives each product:
+        <ol>
+          <li>an empty Google Doc in the store's docs folder, readable by anyone with the link (SEOPub needs that) and editable by your writers;</li>
+          <li>a drafted meta title of at most 70 characters and a drafted meta description;</li>
+          <li>a writing brief: the reason, the target keyword (the page's top real search phrase, skipping price questions and other junk), supporting phrases, SKU, the 90 day numbers and 2 suggested internal links from the same category;</li>
+          <li>a row in the upload sheet with status <span class="ui ar">جاهز للكتابة</span>, the writer and the due date.</li>
+        </ol>
+        The writer gets Editor access to the docs folder and the upload sheet if they do not have it. If time runs out, press it again and it continues with the rest.
+      </li>
+      <li><strong>The writer</strong> moves the row to <span class="ui ar">قيد الكتابة</span>, writes the doc, improves the meta cells, and sets <span class="ui ar">جاهز للرفع</span>.</li>
+      <li><strong>The quality check runs at once</strong> and writes its result in <span class="ui ar">ملاحظات المراجعة</span>.
+        <ol>
+          <li>Back to <span class="ui ar">قيد الكتابة</span> (red note): the doc is under 100 characters, the meta title is empty or longer than 70 characters, the meta description is empty, or the doc still holds brief text.</li>
+          <li>Warning only (amber note): the keyword is missing from the doc or the title, the doc has no links, the meta description is outside 120 to 160 characters, or the doc could not be opened.</li>
+          <li>Green note <span class="ui ar">جاهز</span>: nothing to fix.</li>
+        </ol>
+        Keyword matching ignores diacritics and treats أ إ آ ا, ى ي, ة ه, and Arabic and Indic digits as the same.
+      </li>
+      <li><strong>Publish with SEOPub.</strong> It only sends rows marked <span class="ui ar">جاهز للرفع</span>. You may set a row to <span class="ui ar">تم الرفع</span> yourself after publishing.</li>
+      <li><strong>Within the hour</strong> the script compares the row with what Salla saved. A match becomes <span class="ui ar">منشور ومتحقق</span>; a difference on an uploaded row becomes <span class="ui ar">يحتاج مراجعة</span>, with what differs.</li>
+      <li><strong>Results.</strong> The batch log <span class="ui ar">الدفعات</span> keeps the before numbers of every batch and, once a full 28 day window has passed after publishing, the after numbers.</li>
+    </ol>
+    <p class="box">Writers see their rows through a saved view named after them in each store tab, sorted by due date. A due date turns red when it has passed and the row is not yet delivered.</p>
+  </section>
+
+  <section class="sec" id="menu">
+    <h2>The menu</h2>
+    <p>Everything runs from the <span class="ui ar">مركز البيانات</span> menu in the data center sheet:</p>
+    <ol>
+      <li><span class="ui ar">إعداد أولي</span>: first time setup. Creates the tabs and lists the Search Console properties your account can see.</li>
+      <li><span class="ui ar">تحديث اللوحة</span>: redraws your panel, for example after adding a writer.</li>
+      <li><span class="ui ar">تحديث البيانات الآن</span>: queues a Search Console refresh for the panel's store.</li>
+      <li><span class="ui ar">معاينة دفعة</span> and <span class="ui ar">إرسال الدفعة</span>: see above.</li>
+      <li><span class="ui ar">إسناد الصفوف بلا كاتب</span>: gives the panel's writer and due date to every open row of the store that has no writer. Statuses are not changed.</li>
+      <li><span class="ui ar">مزامنة الحالات والتحقق</span>: queues the status sync and live check now instead of waiting for the hour.</li>
+      <li><span class="ui ar">فحص الفهرسة الآن</span>: queues index checks now.</li>
+      <li><span class="ui ar">تشغيل هذا المتجر من حسابي</span>: makes you the runner of the panel's store (see Roles).</li>
+      <li><span class="ui ar">تجهيز شيت الرفع</span>: prepares the store tabs in the upload sheet, refreshes their colours and writer views, and gives every writer access. Existing rows are never moved or changed; a tab with old headers is first copied to a hidden backup.</li>
+    </ol>
+    <p>Queued work starts within 5 minutes.</p>
+  </section>
+
+  <section class="sec" id="schedule">
+    <h2>Schedules and limits</h2>
+    <ol>
+      <li>Each store's runner checks the queue every 5 minutes.</li>
+      <li>Search Console refresh: once a day, from 06:00 Riyadh time.</li>
+      <li>Status sync and live check: every hour.</li>
+      <li>Index checks: every 4 hours, up to 1900 a day per property.</li>
+      <li>Google gives each account 90 minutes of script time a day; a runner uses at most about 75, so one person running several large stores can run short.</li>
+      <li>If the same job fails twice in a row, the runner gets one email. Every run is listed in <span class="ui ar">سجل التشغيل</span>.</li>
+    </ol>
+  </section>
+
+  <section class="sec" id="roles">
+    <h2>Roles</h2>
+    <p>People are listed in the <span class="ui ar">الفريق</span> tab with three columns: <code>email</code>, <code>name</code> and <code>role</code>.</p>
+    <ol>
+      <li><strong><span class="ar">كاتب</span> (writer).</strong> The only role the script acts on. Writers fill the panel's writer list, get their own view in the upload sheet, and get Editor access to the upload sheet and the docs folders automatically.</li>
+      <li><strong><span class="ar">مدير</span> (manager).</strong> A label. What makes someone a manager is Editor access to the data center sheet, which gives them their own panel, and being a store's runner: the email in the <code>runner</code> column of <span class="ui ar">الإعدادات</span>. A store's scheduled work, including Search Console reads, runs under its runner's Google account.</li>
+    </ol>
+    <p>What a person can see is decided by Google sharing, not by the script: writers stay out of the data center because it is not shared with them. A new role means new behaviour in the script (a reviewer who approves rows before publishing, for example), so it is added in code, not by typing a new value.</p>
+  </section>
+
+  <section class="sec" id="writer">
+    <h2>Adding a writer</h2>
+    <ol>
+      <li>In <span class="ui ar">الفريق</span>, add the writer's Google account email, a short name and the role <span class="ui ar">كاتب</span>. The name must match the <span class="ui ar">الكاتب</span> column of their rows letter for letter; it is also the title of their view.</li>
+      <li>Run <span class="ui ar">تحديث اللوحة</span> so they appear in the panel's writer list.</li>
+      <li>Run <span class="ui ar">تجهيز شيت الرفع</span>. It creates their view and gives them Editor access to the upload sheet and every store's docs folder. Google emails them one invitation per folder or sheet, not one per doc.</li>
+      <li>Send them the writer guide: <a href="writers.html">دليل الكاتب</a>.</li>
+    </ol>
+    <p>Sending a batch to a writer, or assigning rows to them, also gives access when it is missing. If Google refuses a share, the closing message names what to share by hand. Never change a doc's general access to "Editor"; it stays "Anyone with the link: Viewer".</p>
+  </section>
+
+  <section class="sec" id="store">
+    <h2>Adding a store with a new manager</h2>
+    <p>The store must be on Salla: products are recognised by Salla's product links, and SEOPub reads the catalogue from the Salla dashboard.</p>
+
+    <h3>The new manager's Google account</h3>
+    <ol>
+      <li>Has access to the store's property in Search Console.</li>
+      <li>Is added as a test user on the OAuth consent screen of the Google Cloud project behind the script. Without this, Google blocks them.</li>
+      <li>Has Editor access to the data center sheet and the upload sheet.</li>
+    </ol>
+
+    <h3>In the data center</h3>
+    <ol>
+      <li><span class="ui ar">الفريق</span>: add their email, a short name and <span class="ui ar">مدير</span>.</li>
+      <li><span class="ui ar">الإعدادات</span>: add one row.
+        <ol>
+          <li><code>key</code>: short lowercase English, for example <code>newstore</code>. It names the store's hidden tables, so never change it later.</li>
+          <li><code>name</code>: the English name, used in tab titles.</li>
+          <li><code>brand_ar</code>: the Arabic brand added to meta titles.</li>
+          <li><code>domain</code>: for example <code>newstore.com</code>, without https.</li>
+          <li><code>gsc_property</code>: exactly as Search Console lists it, for example <code>sc-domain:newstore.com</code>. The panel lists the properties seen by whoever last ran <span class="ui ar">إعداد أولي</span>.</li>
+          <li><code>sitemap_url</code>: may stay empty; the catalogue comes from SEOPub.</li>
+          <li><code>upload_sheet_id</code>: the upload sheet's ID, the same as the other stores.</li>
+          <li><code>upload_tab</code>: the new tab's name in the upload sheet.</li>
+          <li><code>docs_folder_id</code>: leave empty; the first batch creates the folder and fills it in.</li>
+          <li><code>active</code>: TRUE.</li>
+          <li><code>runner</code>: the new manager's email.</li>
+        </ol>
+      </li>
+      <li>Run <span class="ui ar">تجهيز شيت الرفع</span>. It creates the store's tab in the upload sheet.</li>
+    </ol>
+
+    <h3>The new manager, from their own account</h3>
+    <ol>
+      <li>Opens the data center, sets their panel's store to the new key and runs <span class="ui ar">تشغيل هذا المتجر من حسابي</span>. This installs their 5 minute runner and the instant check on the store's upload tab.</li>
+      <li>Installs SEOPub and connects it with the address and key shown on their panel (<a href="data-center.html">how to connect</a>).</li>
+      <li>Opens the store's Salla dashboard and presses "Send catalogue" once. Products are matched to the store by their domain, so nothing mixes with other stores.</li>
+      <li>Runs <span class="ui ar">تحديث البيانات الآن</span>. Within minutes the store's products tab fills with the catalogue and its groups.</li>
+    </ol>
+  </section>
+
+  <section class="sec" id="cutoffs">
+    <h2>Changing the cutoffs</h2>
+    <p>The numbers on the right of <span class="ui ar">الإعدادات</span> drive the grouping. Change them there; the next refresh uses them. No code change is needed.</p>
+    <ol>
+      <li><code>lowImpr</code> (50) and <code>midImpr</code> (200): impression cutoffs.</li>
+      <li><code>nearPos</code> (10) and <code>farPos</code> (20): position cutoffs.</li>
+      <li><code>ctr</code> (0.01, that is 1%): the click rate under which a first page product counts as low CTR.</li>
+      <li><code>cooldownDays</code> (90): days before a verified product can be picked again.</li>
+    </ol>
+  </section>
+
+  <section class="sec" id="trouble">
+    <h2>When something goes wrong</h2>
+    <ol>
+      <li><strong>Start with <span class="ui ar">سجل التشغيل</span>.</strong> Every scheduled and queued run is there with its result and message.</li>
+      <li><strong>"Another operation is running" or a store busy message.</strong> A long step is running for that store. Wait a minute and try again.</li>
+      <li><strong>The panel says the preview is older than an hour, or the choices changed.</strong> Run <span class="ui ar">معاينة دفعة</span> again.</li>
+      <li><strong>A writer cannot edit a doc.</strong> Check they accepted the invitation with the same Google account that is in <span class="ui ar">الفريق</span>, then run <span class="ui ar">تجهيز شيت الرفع</span> again.</li>
+      <li><strong>A writer's view is empty.</strong> Their name in <span class="ui ar">الفريق</span> differs from the <span class="ui ar">الكاتب</span> column. Make them identical and run <span class="ui ar">تجهيز شيت الرفع</span>.</li>
+      <li><strong>Ready rows are not checked within seconds.</strong> The store's runner has not run <span class="ui ar">تشغيل هذا المتجر من حسابي</span> since the instant check was added. Until they do, the hourly sync still checks them.</li>
+      <li><strong>Nothing comes from Search Console.</strong> Check <code>gsc_property</code> matches a property listed on the panel, and that the runner's account can see it.</li>
+      <li><strong>A row stays <span class="ui ar">جاهز للرفع</span> after publishing.</strong> The data center has no fresh product data yet. Send the products from SEOPub, or wait for its daily send.</li>
+    </ol>
+  </section>
+</main>
+
+<footer>
+  <div class="made">
+    <span class="who">
+      <span>Made by <a href="https://saeed.cool">Saeed</a></span>
+    </span>
+    <span>SEOPub 0.0.14</span>
+  </div>
+</footer>
+
+</body>
+</html>

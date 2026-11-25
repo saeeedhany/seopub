@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>دليل الكاتب</title>
+<meta name="description" content="دليل كتابة أوصاف المنتجات: أين تجد صفوفك، ماذا تكتب في المستند وخانات الميتا، وكيف تقرأ ملاحظات المراجعة." />
+<link rel="icon" href="seopub.svg" type="image/svg+xml" />
+<style>
+@font-face { font-family: "Bricolage"; font-weight: 200 800; font-stretch: 75% 100%; font-display: swap; src: url("fonts/bricolage-grotesque-latin-standard-normal.woff2") format("woff2-variations"); }
+
+:root {
+  --bg: #F4ECDF;
+  --paper: #FFFBF4;
+  --ink: #3D3029;
+  --edge: #4B3A31;
+  --muted: #7D6C61;
+  --honey: #F6D48F;
+  --chip: #EFE6D9;
+  --salla: #BCDDC4;
+  --zid: #D8CBEF;
+  --fox: #F7CD9B;
+  --b: 2px;
+  --r: 14px;
+  color-scheme: light;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: "Bricolage", system-ui, sans-serif;
+  font-optical-sizing: auto;
+  font-size: 16px;
+  line-height: 1.55;
+  color: var(--ink);
+  background: var(--bg);
+  min-height: 100vh;
+}
+
+a { color: inherit; }
+:focus-visible { outline: 3px solid var(--edge); outline-offset: 3px; }
+.hidden { display: none !important; }
+
+.top {
+  background: var(--honey);
+  border-bottom: var(--b) solid var(--edge);
+}
+.top-in {
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 14px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 800;
+  font-size: 22px;
+  font-stretch: 85%;
+  letter-spacing: -0.01em;
+}
+.brand img { width: 34px; height: 34px; border: var(--b) solid var(--edge); border-radius: 10px; }
+.ver {
+  font-size: 13px;
+  font-weight: 700;
+  background: var(--paper);
+  border: var(--b) solid var(--edge);
+  border-radius: 999px;
+  padding: 3px 11px;
+  white-space: nowrap;
+}
+
+main {
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 40px 16px 56px;
+}
+
+.hero h1 {
+  font-size: clamp(38px, 9vw, 64px);
+  line-height: 0.98;
+  font-weight: 800;
+  font-stretch: 78%;
+  letter-spacing: -0.02em;
+  max-width: 12ch;
+}
+.hero p {
+  margin-top: 16px;
+  font-size: 18px;
+  max-width: 34em;
+}
+.stores {
+  margin-top: 18px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.stores span {
+  font-size: 14px;
+  font-weight: 700;
+  border: var(--b) solid var(--edge);
+  border-radius: 999px;
+  padding: 3px 12px;
+}
+.stores .s { background: var(--salla); }
+.stores .z { background: var(--zid); }
+.stores .dl { background: var(--paper); font-variant-numeric: tabular-nums; }
+
+
+.picker {
+  margin-top: 36px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  border: var(--b) solid var(--edge);
+  border-radius: var(--r);
+  overflow: hidden;
+  box-shadow: 4px 4px 0 var(--edge);
+  background: var(--paper);
+}
+.picker button {
+  font: inherit;
+  font-weight: 700;
+  font-size: 17px;
+  color: var(--ink);
+  background: transparent;
+  border: 0;
+  padding: 13px 10px;
+  cursor: pointer;
+}
+.picker button + button { border-left: var(--b) solid var(--edge); }
+.picker button[aria-selected="true"] { background: var(--fox); }
+.picker button[data-browser="chrome"][aria-selected="true"] { background: var(--salla); }
+
+.panel {
+  margin-top: 22px;
+  background: var(--paper);
+  border: var(--b) solid var(--edge);
+  border-radius: var(--r);
+  box-shadow: 4px 4px 0 var(--edge);
+  padding: 24px 22px;
+}
+.panel h2 {
+  font-size: 26px;
+  font-weight: 800;
+  font-stretch: 85%;
+  line-height: 1.15;
+}
+.panel .lead { margin-top: 6px; color: var(--muted); }
+
+.get {
+  margin-top: 20px;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+  font-weight: 800;
+  font-size: 19px;
+  color: var(--ink);
+  background: var(--honey);
+  border: var(--b) solid var(--edge);
+  border-radius: 12px;
+  padding: 13px 22px;
+  box-shadow: 4px 4px 0 var(--edge);
+  transition: transform 0.08s, box-shadow 0.08s;
+}
+.get:hover { transform: translate(-1px, -1px); box-shadow: 5px 5px 0 var(--edge); }
+.get:active { transform: translate(4px, 4px); box-shadow: 0 0 0 var(--edge); }
+.get small { font-size: 13px; font-weight: 600; color: var(--muted); }
+
+.steps {
+  list-style: none;
+  counter-reset: s;
+  margin-top: 26px;
+  display: grid;
+  gap: 14px;
+}
+.steps li {
+  counter-increment: s;
+  display: grid;
+  grid-template-columns: 32px minmax(0, 1fr);
+  gap: 12px;
+  align-items: start;
+}
+.steps li::before {
+  content: counter(s);
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  font-weight: 800;
+  background: var(--chip);
+  border: var(--b) solid var(--edge);
+  border-radius: 50%;
+}
+.steps li > div { padding-top: 3px; }
+.steps strong { font-weight: 800; }
+
+.ui {
+  font-weight: 700;
+  background: var(--chip);
+  border: 1.5px solid var(--edge);
+  border-radius: 6px;
+  padding: 0 6px;
+  white-space: nowrap;
+}
+code {
+  font-family: ui-monospace, "SFMono-Regular", Menlo, monospace;
+  font-size: 0.9em;
+  background: var(--chip);
+  border-radius: 5px;
+  padding: 1px 5px;
+  overflow-wrap: anywhere;
+}
+.copy {
+  font: inherit;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--ink);
+  background: var(--paper);
+  border: 1.5px solid var(--edge);
+  border-radius: 8px;
+  padding: 1px 9px;
+  margin-left: 4px;
+  cursor: pointer;
+}
+
+.aside {
+  margin-top: 22px;
+  padding-top: 18px;
+  border-top: 1.5px dashed var(--edge);
+  font-size: 15px;
+}
+.aside h3 { font-size: 16px; font-weight: 800; }
+.aside p { margin-top: 4px; }
+
+.after {
+  margin-top: 44px;
+}
+.after h2, .notes h2 {
+  font-size: 24px;
+  font-weight: 800;
+  font-stretch: 85%;
+}
+.after ol {
+  margin-top: 12px;
+  padding-left: 22px;
+  display: grid;
+  gap: 8px;
+}
+
+.notes {
+  margin-top: 44px;
+  background: var(--paper);
+  border: var(--b) solid var(--edge);
+  border-radius: var(--r);
+  padding: 20px 22px;
+}
+.notes .when { color: var(--muted); font-size: 14px; margin-top: 2px; }
+.notes h3 { font-size: 16px; font-weight: 800; margin-top: 14px; }
+.notes ol { margin-top: 6px; padding-left: 22px; display: grid; gap: 6px; font-size: 15px; }
+.notes .note { margin-top: 14px; padding: 8px 12px; font-size: 14px; border-left: 3px solid var(--edge); background: var(--bg); border-radius: 0 8px 8px 0; }
+
+footer {
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 22px 16px 40px;
+  border-top: 1.5px dashed var(--edge);
+  font-size: 14px;
+  color: var(--muted);
+}
+.made {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 6px 16px;
+  font-size: 15px;
+  color: var(--ink);
+}
+.made a {
+  font-weight: 800;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 3px;
+}
+.made a:hover { background: var(--honey); }
+.who { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 14px; }
+.gh {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  text-decoration: none;
+  font-weight: 700;
+  color: var(--ink);
+  background: var(--paper);
+  border: 1.5px solid var(--edge);
+  border-radius: 999px;
+  padding: 2px 11px 2px 8px;
+}
+.gh:hover { background: var(--honey); }
+.gh svg { width: 16px; height: 16px; fill: currentColor; }
+.credit { margin-top: 8px; font-size: 13px; }
+
+@media (max-width: 480px) {
+  .panel, .notes { padding: 20px 16px; }
+  .get { width: 100%; justify-content: center; flex-wrap: wrap; }
+  .hero p { font-size: 17px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .get { transition: none; }
+}
+
+.back { font-weight: 700; font-size: 15px; text-decoration-thickness: 2px; text-underline-offset: 3px; }
+.back:hover { background: var(--paper); }
+.sec { margin-top: 36px; }
+.sec h2 { font-size: 24px; font-weight: 800; font-stretch: 85%; }
+.sec p { margin-top: 10px; }
+.sec ol { margin-top: 12px; padding-left: 22px; display: grid; gap: 8px; }
+.tag { display: inline-block; margin-top: 18px; font-size: 14px; font-weight: 700; background: var(--chip); border: var(--b) solid var(--edge); border-radius: 999px; padding: 3px 12px; }
+body { font-family: "Bricolage", "Noto Naskh Arabic", "Noto Sans Arabic", "Segoe UI", Tahoma, system-ui, sans-serif; font-size: 17px; line-height: 1.8; }
+.hero h1 { max-width: none; line-height: 1.2; font-stretch: 100%; }
+.sec ol, .sec ul { padding-left: 0; padding-right: 22px; }
+.sec ul { margin-top: 12px; display: grid; gap: 8px; }
+.toc { margin-top: 22px; display: flex; flex-wrap: wrap; gap: 8px; }
+.toc a { font-size: 14px; font-weight: 700; text-decoration: none; background: var(--paper); border: var(--b) solid var(--edge); border-radius: 999px; padding: 2px 12px; }
+.toc a:hover { background: var(--honey); }
+.rule { margin-top: 14px; padding: 12px 14px; border: var(--b) solid var(--edge); border-radius: 12px; background: var(--paper); }
+.rule h3 { font-size: 17px; font-weight: 800; }
+.rule ol { margin-top: 8px; }
+.red { background: #fdecea; }
+.amber { background: #fff4e5; }
+.green { background: #e6f4ea; }
+.msg { font-weight: 700; background: var(--chip); border-radius: 6px; padding: 0 6px; }
+.status { display: grid; gap: 10px; margin-top: 12px; }
+.status div { padding: 10px 14px; border: 1.5px solid var(--edge); border-radius: 10px; background: var(--paper); }
+.status strong { font-weight: 800; }
+.ui { white-space: normal; -webkit-box-decoration-break: clone; box-decoration-break: clone; }
+.made { justify-content: flex-start; }
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="top-in">
+    <span class="brand"><img src="seopub.svg" alt="" />دليل الكاتب</span>
+  </div>
+</header>
+
+<main>
+  <section class="hero">
+    <h1>دليل الكاتب</h1>
+    <p>كل ما تحتاجه لكتابة أوصاف المنتجات: أين تجد صفوفك، ماذا تكتب في المستند وفي خانات الميتا، وكيف تعرف أن عملك جاهز.</p>
+    <nav class="toc" aria-label="المحتويات">
+      <a href="#access">ما الذي تحصل عليه</a>
+      <a href="#rows">صفوفك وموعد التسليم</a>
+      <a href="#before">قبل الكتابة</a>
+      <a href="#doc">الكتابة في المستند</a>
+      <a href="#meta">خانات الميتا</a>
+      <a href="#ready">عند الانتهاء</a>
+      <a href="#review">ملاحظات المراجعة</a>
+      <a href="#statuses">معنى كل حالة</a>
+      <a href="#faq">أسئلة شائعة</a>
+    </nav>
+  </section>
+
+  <section class="panel" id="access">
+    <h2>ما الذي تحصل عليه</h2>
+    <ol class="steps">
+      <li><div><strong>دعوة من Google لتحرير شيت الرفع.</strong> فيه تبويب لكل متجر، وكل صف فيه منتج واحد مطلوب له وصف.</div></li>
+      <li><div><strong>دعوة لتحرير مجلد المستندات لكل متجر.</strong> لكل منتج مستند Google خاص به، ورابطه في عمود <span class="ui">رابط Google Doc</span>.</div></li>
+      <li><div><strong>عرض خاص بك في الشيت</strong> يعرض صفوفك فقط، كما في القسم التالي.</div></li>
+    </ol>
+    <p class="aside">تصلك رسالة دعوة واحدة لكل مجلد ولكل شيت، وليس لكل مستند. المستندات الجديدة تفتح لك تلقائيا لأنها تنشأ داخل المجلد.</p>
+  </section>
+
+  <section class="sec" id="rows">
+    <h2>صفوفك وموعد التسليم</h2>
+    <ol>
+      <li>افتح شيت الرفع، ثم تبويب المتجر، ثم من قائمة <span class="ui">البيانات</span> اختر <span class="ui">عروض الفلاتر</span> ثم العرض الذي يحمل اسمك: <span class="ui">صفوف اسمك</span>.</li>
+      <li>العرض يظهر الصفوف المسندة إليك فقط في عمود <span class="ui">الكاتب</span>، ويخفي الصفوف المنشورة، ويرتبها حسب <span class="ui">موعد التسليم</span>. الأقرب موعدا في الأعلى.</li>
+      <li>إذا مر موعد التسليم ولم يصل الصف إلى <span class="ui">جاهز للرفع</span>، تظهر خانة الموعد باللون الأحمر.</li>
+      <li>العرض لا يغير الشيت عند غيرك، فاستخدمه بحرية.</li>
+    </ol>
+  </section>
+
+  <section class="sec" id="before">
+    <h2>قبل الكتابة</h2>
+    <p>اقرأ عمود <span class="ui">توجيه الكتابة</span> في صف المنتج. فيه:</p>
+    <ol>
+      <li><strong>السبب:</strong> لماذا اختير هذا المنتج الآن.</li>
+      <li><strong>الكلمة:</strong> العبارة التي يبحث بها الناس عن المنتج. هي أهم سطر.</li>
+      <li><strong>كلمات مساندة:</strong> عبارات بحث أخرى يمكنك استخدامها بشكل طبيعي.</li>
+      <li><strong>SKU</strong> وأرقام آخر 90 يوما، للاطلاع فقط.</li>
+      <li><strong>روابط مقترحة:</strong> صفحات من نفس المتجر تضع لها روابط داخل الوصف.</li>
+    </ol>
+    <p>واقرأ عمود <span class="ui">ملاحظات الكاتب</span> إن كان فيه شيء: ملاحظات عن المنتج بينك وبين المدير، مثل معلومة غير مؤكدة. لا تكتب في الوصف معلومة غير مؤكدة.</p>
+  </section>
+
+  <section class="sec" id="doc">
+    <h2>الكتابة في المستند</h2>
+    <ol>
+      <li>افتح المستند من عمود <span class="ui">رابط Google Doc</span> واكتب <strong>وصف المنتج فقط</strong>.</li>
+      <li>لا تنسخ نص التوجيه إلى المستند. وجود عبارات مثل «اكتب الوصف فقط» أو «توجيه الكتابة» أو سطر يبدأ بـ «السبب:» يرجع الصف إليك.</li>
+      <li>الحد الأدنى 100 حرف، والوصف الجيد أطول من ذلك بكثير.</li>
+      <li>استخدم <strong>الكلمة</strong> بنصها مرة واحدة على الأقل في الوصف.</li>
+      <li>أضف رابطا داخليا واحدا على الأقل من الروابط المقترحة: حدد كلمة في النص ثم <span class="ui">إدراج</span> ثم <span class="ui">رابط</span>.</li>
+    </ol>
+  </section>
+
+  <section class="sec" id="meta">
+    <h2>خانات الميتا</h2>
+    <p>في صف المنتج مسودات جاهزة. راجعها وحسنها:</p>
+    <ol>
+      <li><span class="ui">Meta Title الجديد</span>: عنوان الصفحة في نتائج Google. لا يزيد على 70 حرفا، ويحتوي الكلمة.</li>
+      <li><span class="ui">Meta Description الجديد</span>: النص الذي يظهر تحت العنوان في Google. الأفضل بين 120 و160 حرفا.</li>
+      <li><span class="ui">الاسم الجديد (اختياري)</span> و<span class="ui">SEO URL / Slug الجديد</span>: لا تغيرهما إلا إذا طلب المدير ذلك.</li>
+      <li>لا تعدل أعمدة <span class="ui">ID المنتج</span> و<span class="ui">الدفعة</span> و<span class="ui">الكاتب</span> و<span class="ui">موعد التسليم</span> و<span class="ui">ملاحظات المراجعة</span>.</li>
+    </ol>
+  </section>
+
+  <section class="panel" id="ready">
+    <h2>عند الانتهاء</h2>
+    <ol class="steps">
+      <li><div>عند بدء العمل على صف غير <span class="ui">حالة العمل</span> من <span class="ui">جاهز للكتابة</span> إلى <span class="ui">قيد الكتابة</span>.</div></li>
+      <li><div>عندما ينتهي المستند وخانات الميتا، غيرها إلى <span class="ui">جاهز للرفع</span>.</div></li>
+      <li><div>يفحص النظام الصف فورا، ويكتب النتيجة في عمود <span class="ui">ملاحظات المراجعة</span> خلال ثوان، أو خلال ساعة على الأكثر.</div></li>
+    </ol>
+  </section>
+
+  <section class="sec" id="review">
+    <h2>ملاحظات المراجعة</h2>
+    <p>النتيجة واحدة من ثلاث:</p>
+
+    <div class="rule red">
+      <h3>مرفوض</h3>
+      <p>يرجع الصف إلى <span class="ui">قيد الكتابة</span>. أصلح السبب ثم أعده إلى <span class="ui">جاهز للرفع</span>. الأسباب:</p>
+      <ol>
+        <li><span class="msg">المستند قصير</span>: المستند أقل من 100 حرف.</li>
+        <li><span class="msg">العنوان التعريفي فارغ</span>: خانة Meta Title الجديد فارغة.</li>
+        <li><span class="msg">العنوان أطول من 70 حرفا</span>: اختصر العنوان.</li>
+        <li><span class="msg">الوصف التعريفي فارغ</span>: خانة Meta Description الجديد فارغة.</li>
+        <li><span class="msg">المستند يحتوي نص التوجيه</span>: احذف نص التوجيه من المستند.</li>
+      </ol>
+    </div>
+
+    <div class="rule amber">
+      <h3>تنبيه</h3>
+      <p>يبقى الصف <span class="ui">جاهز للرفع</span>، لكن راجع الملاحظة وحسن ما تستطيع:</p>
+      <ol>
+        <li><span class="msg">الكلمة غير موجودة في المستند</span>: استخدم الكلمة بنصها في الوصف.</li>
+        <li><span class="msg">الكلمة غير موجودة في العنوان</span>: ضع الكلمة في Meta Title الجديد.</li>
+        <li><span class="msg">لا توجد روابط داخلية</span>: أضف رابطا من الروابط المقترحة.</li>
+        <li><span class="msg">طول الوصف التعريفي</span> خارج 120 إلى 160 حرفا.</li>
+        <li><span class="msg">تعذر فتح المستند</span>: تأكد أن الرابط صحيح وأن المستند لم يحذف، أو أخبر المدير.</li>
+      </ol>
+      <p>مطابقة الكلمة لا تتأثر بالتشكيل، ولا بالفرق بين أ وإ وآ وا، ولا بين ى وي، ولا بين ة وه، ولا بين الأرقام العربية والهندية.</p>
+    </div>
+
+    <div class="rule green">
+      <h3>جاهز</h3>
+      <p>الصف سليم وينتظر الرفع. إذا أعدته إلى <span class="ui">قيد الكتابة</span> لتعديل شيء، تمسح هذه الملاحظة تلقائيا ويفحص من جديد عند إعادته إلى <span class="ui">جاهز للرفع</span>.</p>
+    </div>
+  </section>
+
+  <section class="sec" id="statuses">
+    <h2>معنى كل حالة</h2>
+    <div class="status">
+      <div><strong>جاهز للكتابة</strong>: الصف جديد ولم تبدأ فيه بعد.</div>
+      <div><strong>قيد الكتابة</strong>: تعمل عليه الآن، أو رجع إليك بسبب ملاحظة مرفوض.</div>
+      <div><strong>جاهز للرفع</strong>: أنهيت عملك واجتاز الفحص. لا تعدل الصف بعد ذلك إلا بإعادته إلى قيد الكتابة.</div>
+      <div><strong>تم الرفع</strong>: رفع المدير التعديلات إلى المتجر.</div>
+      <div><strong>منشور ومتحقق</strong>: تأكد النظام أن المتجر يعرض ما كتبته. انتهى الصف ويختفي من عرضك.</div>
+      <div><strong>يحتاج مراجعة</strong>: ما في المتجر يختلف عما في الصف. المدير يراجعه، وقد يطلب منك تعديلا.</div>
+    </div>
+  </section>
+
+  <section class="sec" id="faq">
+    <h2>أسئلة شائعة</h2>
+    <ol>
+      <li><strong>لا أستطيع الكتابة في المستند.</strong> افتح رسالة الدعوة واقبلها بنفس حساب Google الذي أعطيته للمدير. إن بقيت المشكلة أخبر المدير.</li>
+      <li><strong>لا أجد العرض الذي يحمل اسمي.</strong> أخبر المدير ليضيفك إلى فريق الكتاب، ثم يظهر العرض بعد التحديث التالي.</li>
+      <li><strong>رجع صفي إلى قيد الكتابة.</strong> اقرأ عمود ملاحظات المراجعة، فهو يذكر السبب بالضبط.</li>
+      <li><strong>أريد تعديل صف بعد أن جعلته جاهز للرفع.</strong> أعده إلى قيد الكتابة، عدل، ثم أعده إلى جاهز للرفع.</li>
+      <li><strong>معلومة عن المنتج غير مؤكدة.</strong> لا تكتبها، واذكرها في عمود ملاحظات الكاتب.</li>
+    </ol>
+  </section>
+</main>
+
+<footer>
+  <div class="made">
+    <span class="who">
+      <span>صنعه <a href="https://saeed.cool">Saeed</a></span>
+    </span>
+  </div>
+</footer>
+
+</body>
+</html>
